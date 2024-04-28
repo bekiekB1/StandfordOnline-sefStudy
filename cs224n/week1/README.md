@@ -78,7 +78,7 @@ $\begin{aligned}
 
 
 ![Untitled](assest/image.png)
-![Alt text](image.png)
+![Alt text](assest/image2.png)
 
 Word2vec maximizes objective function by putting similar words nearby in space
 
