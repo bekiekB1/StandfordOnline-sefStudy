@@ -32,19 +32,19 @@ Framework for learning word vectors.
 
 For each position t=1m…,T, predict context words within a window of fixed size m, geven center word $w_j$. The likelihood function is given by:
 
-$L(\theta) = \prod_{t=1}^T \prod_{j \neq 0, -m \leq j \leq m} P(w_{t+j} | w_t; \theta)$
+$$L(\theta) = \prod_{t=1}^T \prod_{j \neq 0, -m \leq j \leq m} P(w_{t+j} | w_t; \theta)$$
 where θ represents all the variables to be optimized.
 
 The objective function J(θ) is the (average) negative log-likelihood:
 
-$J(\theta) = -\frac{1}{T} \log L(\theta) = -\frac{1}{T} \sum_{t=1}^T \sum_{j \neq 0, -m \leq j \leq m} \log P(w_{t+j} | w_t; \theta)$
+$$J(\theta) = -\frac{1}{T} \log L(\theta) = -\frac{1}{T} \sum_{t=1}^T \sum_{j \neq 0, -m \leq j \leq m} \log P(w_{t+j} | w_t; \theta)$$
 
 The objective function is sometimes called a cost or loss function.
 $\text{Minimizing objective function} \Leftrightarrow \text{Maximizing predictive accuracy}$
 
 minimize objective function $J(\theta)$
 
-$J(\theta)=\frac{-1}{T} \sum_{t=1}^T \sum_{\substack{j \leq j \leq m \\ j \neq 0}} \log P\left(\omega_{t+j} \mid \omega_t ; \theta\right)$
+$$J(\theta)=\frac{-1}{T} \sum_{t=1}^T \sum_{\substack{j \leq j \leq m \\ j \neq 0}} \log P\left(\omega_{t+j} \mid \omega_t ; \theta\right)$$
 
 To calculate $P\left(w_{t+j} \mid w_t ; \theta\right)$, we use two vectors per word "w":
 
@@ -54,27 +54,28 @@ $u_w$ when w is a context word.
 
 Then for context ward "o", and center word "c"
 
-$P(o\mid c)=\frac{\exp \left(u_0^{\top} v_c\right)}{\sum_{w \in v} \exp \left(u^{\top}_w v_c\right)}$
+$$P(o\mid c)=\frac{\exp \left(u_0^{\top} v_c\right)}{\sum_{w \in v} \exp \left(u^{\top}_w v_c\right)}$$
 lager dot product = larger Probability
 
 Dot product between o and c vectors, compares similarity
-$\theta=\left[\begin{array}{c}
+
+$$\theta=\left[\begin{array}{c}
 \text { Vaardvert } \\
 \vdots \\
 \text { veewer } \\
 \text { Ueaduak } \\
 \vdots \\
 \text { Uzebra }
-\end{array}\right] \in R^{2 d v}$
+\end{array}\right] \in R^{2 d v}$$
 
 Compute Gradient w.rt $v_c$ and $u_o$
 
-$\begin{aligned}
+$$\begin{aligned}
 & \frac{\partial}{\partial v_c} p(0 \mid c)=u_0-\sum_{x=1}^n \frac{\exp \left(u_x^T v_c\right)}{\sum_1^n \exp \left(u_w^T v_c\right)} u_w \\
 & =u_0-\sum_{x=1}^n p(n \mid c) u_y=u_0-E\left[u_0\right] \\
 & \text { observed - expected } \\
 &
-\end{aligned}$
+\end{aligned}$$
 
 
 ![Untitled](assest/image.png)
@@ -84,7 +85,7 @@ Word2vec maximizes objective function by putting similar words nearby in space
 
 So for a window ‘m’ in SGD, we only have at most 2m+1 words, making our gradient vector very sparse(so not efficient).
 
-$\nabla_{\theta} J_t(\theta)=\left[\begin{array}{c}
+$$\nabla_{\theta} J_t(\theta)=\left[\begin{array}{c}
 \text { 0 } \\
 \vdots \\
 \nabla_{v_{like}} \\
@@ -95,6 +96,6 @@ $\nabla_{\theta} J_t(\theta)=\left[\begin{array}{c}
 \nabla_{u_{learning}} \\
 \vdots \\
 \text { 0 } \\
-\end{array}\right] \in R^{2 d v}$
+\end{array}\right] \in R^{2 d v}$$
 
 Words Vectors are row vector in DL frameworks.
