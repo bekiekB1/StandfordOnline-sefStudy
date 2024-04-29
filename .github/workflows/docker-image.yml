@@ -3,6 +3,8 @@ name: Test CI/CD Pipeline
 on:
   push:
     branches: ["main"]
+    paths-ignore:
+        - 'README.md' # Ignore changes to the README file
   pull_request:
     branches: ["main"]
 
