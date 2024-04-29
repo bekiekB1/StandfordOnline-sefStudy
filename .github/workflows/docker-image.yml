@@ -1,0 +1,41 @@
+name: Test CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  run-tests:
+    name: Run tests with Docker Compose
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
+      - name: Run make test with Docker Compose
+        run: docker-compose run --rm run-tests #Need to add tests
+
+          
+  build-and-push-image:
+    name: Build and push Docker image
+    runs-on: ubuntu-latest
+    needs: [run-tests]
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Push Docker image to Docker Hub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker build -t $DOCKER_USERNAME/test_ml:latest .
+          docker push $DOCKER_USERNAME/test_ml:latest
