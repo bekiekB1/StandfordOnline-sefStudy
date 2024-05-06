@@ -120,7 +120,7 @@ We used naive softmax, which is simple but expensive for training. Negative samp
 
 Motivation for Negative Sampling:
 
-$P(o\mid c)=\frac{\exp \left(u_0^{\top} v_c\right)}{\sum_{w \in V} \exp \left(u^{\top}_w v_c\right)}$
+$$P(o\mid c)=\frac{\exp \left(u_0^{\top} v_c\right)}{\sum_{w \in V} \exp \left(u^{\top}_w v_c\right)}$$
 
 ${\sum_{w \in v} \exp \left(u^{\top}_w v_c\right)}$ → To compute this, we need to calculate dot product with center work for each of the maybe 100,000 words in the Vocabulary
 
@@ -132,23 +132,23 @@ SGNP
 
 Distributed presentation of words and phrases, Mikolov et al. 2013
 
-$J(\theta) = \frac{1}{T} \sum_{t=1}^k  J_t(\theta)$  # loss for each center word in particular window
+$$J(\theta) = \frac{1}{T} \sum_{t=1}^k  J_t(\theta)$$  # loss for each center word in particular window
 
-$J_t(\theta)=\log \sigma\left(u_o^T v_c\right)+\sum_{i=1}^k \mathbb{E}_{j \sim P(w)}\left[\log \sigma\left(-u_j^T v_c\right)\right]$
+$$J_t(\theta)=\log \sigma\left(u_o^T v_c\right)+\sum_{i=1}^k \mathbb{E}_{j \sim P(w)}\left[\log \sigma\left(-u_j^T v_c\right)\right]$$
 
-where, $\sigma(x) = \frac{1}{1+e^{-x}}$
+where, $$\sigma(x) = \frac{1}{1+e^{-x}}$$
 
 Maximize $J_t(\theta)$   by making the dot product between the center and outside word large. First art of of $J_t(\theta)$ is actual context word and second part is random word thus the negative sign so that its maximized in both case.
 
 Rewriting to match Hw2 and class:
 
-$J_{neg-sample}(u_o, v_c, U) =-\log \sigma\left(u_o^T v_c\right) - \sum_{k \in \text{\{K sampled index}\}} \log(-u_k^Tv_c)$
+$$J_{neg-sample}(u_o, v_c, U) =-\log \sigma\left(u_o^T v_c\right) - \sum_{k \in \text{\{K sampled index}\}} \log(-u_k^Tv_c)$$
 
 - We take k negative samples (using word probabilities)
 - Maximize probability that real outside word appears, minimize probability that random words appear around center word
 
 **Trick**:
-Sample with P(w)=U(w)3/4/Z,
+Sample with $$P(w)=U(w)^{3/4}/Z$$,
 
 the unigram distribution U(w) raised to the 3/4 power (We provide this function in the starter code).The power makes less frequent words be sampled more often(meaning dampening diff between common and real word, less frequent word occurs more often but not that much also unlike uniform)
 Unigram is just frac if “hello” occurs 90 times in vocab of 1,000 then pob → 90/1000
@@ -192,9 +192,9 @@ How do we capture this?
 
 → using Log-bilinear model
 
-$w_i \cdot w_j = logP(i|j)$
+$$w_i \cdot w_j = logP(i|j)$$
 
-vector difference will be then $w_x \cdot (w_a - w_b) = log(\frac{P(x|a)}{P(x|b)}$
+vector difference will be then $$w_x \cdot (w_a - w_b) = log(\frac{P(x|a)}{P(x|b)}$$
 
 ![Untitled](assest/Untitled%205.png)
 
@@ -206,7 +206,7 @@ f → to cap the large count co-occurrence element
 
 Directly evaluate on specific/intermediate sub task. Its faster to compute and helps understand the system. But it might not be clear about its effect on real task like Machine Translation or ..
 
-Use vector analogies like a:b::c:?   → d = $argmax_i\frac{(x_b-x_b+x_c)^Tx_i}{||x_b-x_a+x_c}$
+Use vector analogies like a:b::c:?   → d = $$argmax_i\frac{(x_b-x_b+x_c)^Tx_i}{||x_b-x_a+x_c}$$
 
 Evaluate by cosine distance after addition of intuitive semantic and syntactic analogy questions.(trick, discarding the input words from the search).
 
@@ -234,9 +234,9 @@ In Practice we used word vector.
 
 Different senses of a word reside in a linear superposition(weighted sum) in standard word embedding like word2vec
 
-$v_{bank} = \alpha_1 v_{bank_1}+\alpha_2v_{bank_2} + ...$
+$$v_{bank} = \alpha_1 v_{bank_1}+\alpha_2v_{bank_2} + ...$$
 
-where, $\alpha_1 = \frac{f_1}{f_1 + f_2 + f_3}$
+where, $$\alpha_1 = \frac{f_1}{f_1 + f_2 + f_3}$$
 
 In application $v_{bank}$ self disambiguate, if we ask if bank is similar to teller then yes as some of its component relates to it and also yes for river as some of its component relates to river.
 
